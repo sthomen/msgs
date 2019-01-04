@@ -7,10 +7,8 @@ from message import MessageList
 from datetime import datetime
 
 class Msgs(Applet):
-	def __init__(self, config, menus):
-		Applet.__init__(self, config, menus)
-		self.config = config
-
+	def __init__(self):
+		Applet.__init__(self)
 		self.updated = None
 		self.cachetime = 60
 
@@ -54,8 +52,8 @@ class Msgs(Applet):
 		path=None
 
 		try:
-			if self.config.has_section('messages'):
-				path=self.config.get('messages', 'path')
+			if Config.has_section('messages'):
+				path=Config.get('messages', 'path')
 		except:
 			pass
 			
