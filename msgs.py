@@ -5,7 +5,6 @@ import os
 from ..applet import Applet
 from message import MessageList
 from datetime import datetime
-from ConfigParser import ConfigParser # for NoOptionError
 
 class Msgs(Applet):
 	def __init__(self, config, menus):
@@ -61,5 +60,5 @@ class Msgs(Applet):
 			pass
 			
 		if self.updated == None or (datetime.now() - self.updated).total_seconds() > self.cachetime:
-			self.messagelist=MessageList()
+			self.messagelist=MessageList(path)
 			self.updated=datetime.now()
