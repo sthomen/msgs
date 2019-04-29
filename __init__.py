@@ -1,1 +1,1 @@
-from msgs import Msgs
+from .msgs import Msgs

@@ -3,7 +3,7 @@
 import os
 
 from ..applet import Applet
-from message import MessageList
+from .message import Messages
 from datetime import datetime
 
 class Msgs(Applet):
@@ -20,7 +20,7 @@ class Msgs(Applet):
 	def dispatch(self, method, *args, **kwargs):
 		output=None
 
-		self.load_messagelist()
+		self.load_messages()
 
 		self.metadata={}
 
@@ -34,11 +34,11 @@ class Msgs(Applet):
 	def list(self):
 		self.metadata['title']='Messages'
 
-		return self.render('list', { 'list': self.messagelist })
+		return self.render('list', { 'messages': self.messages })
 
 	def message(self, id):
-		if self.messagelist.has_message(id):
-			message=self.messagelist.get_message(id)
+		if id in self.messages:
+			message=self.messages.get(id)
 
 			self.metadata['title']=message.title
 
@@ -48,7 +48,7 @@ class Msgs(Applet):
 
 		return self.render('notfound', { 'id': id })
 
-	def load_messagelist(self):
+	def load_messages(self):
 		path=None
 
 		try:
@@ -58,5 +58,5 @@ class Msgs(Applet):
 			pass
 			
 		if self.updated == None or (datetime.now() - self.updated).total_seconds() > self.cachetime:
-			self.messagelist=MessageList(path)
+			self.messages=Messages(path)
 			self.updated=datetime.now()

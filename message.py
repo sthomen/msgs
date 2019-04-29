@@ -5,8 +5,10 @@ import re
 from email.parser import Parser
 from datetime import datetime
 
-class MessageList(object):
+class Messages(dict):
 	def __init__(self, path=None):
+		self.bounds={}
+
 		if not path:
 			self.path='/var/msgs'
 
@@ -15,13 +17,11 @@ class MessageList(object):
 	def load(self):
 		self.load_bounds()
 
-		self.messages={}
-
 		for index in range(self.bounds.get('lower'), self.bounds.get('upper')+1):
 			path=os.path.join(self.path, str(index))
 
 			if os.path.exists(path):
-				self.messages[index]=Message(path)
+				self[index]=Message(path)
 
 	def load_bounds(self):
 		lower = 0
@@ -34,15 +34,6 @@ class MessageList(object):
 			'lower': int(lower),
 			'upper': int(upper)
 		}
-
-	def items(self):
-		return self.messages.items()
-
-	def has_message(self, id):
-		return self.messages.has_key(id)
-
-	def get_message(self, id):
-		return self.messages.get(id)
 
 class Message(object):
 	def __init__(self, path):
